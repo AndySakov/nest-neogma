@@ -1,35 +1,32 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://kamilmysliwiec.com/public/nest-logo.png#1" alt="Nest Logo" height="155" />   </a>
-  <a href="https://neo4j.com" target="_blank"><img src="https://dist.neo4j.com/wp-content/uploads/20210423072428/neo4j-logo-2020-1.svg" height="155"></a>
-</p>
+[![Nest Logo](https://kamilmysliwiec.com/public/nest-logo.png#1)](http://nestjs.com/) [![Neogma Logo](https://themetalfleece.github.io/neogma/assets/logo-text-horizontal.svg)](https://themetalfleece.github.io/neogma/)
 
-# Nest Neo4j
+# Nest Neogma
 
-> Neo4j integration for Nest
+> Neogma integration for Nest
 
 ## Description
 
-This repository provides [Neo4j](https://www.neo4j.com) integration for [Nest](http://nestjs.com/).
+This repository provides a [Neogma](https://themetalfleece.github.io/neogma/) integration for [Nest](http://nestjs.com/).
 
 ## Installation
 
-```
-$ npm i --save nest-neo4j
+```sh
+yarn add nest-neogma
 ```
 
 ## Quick Start
 
-Register the Neo4j Module in your application using the `forRoot` method, passing the neo4j connection information as an object:
+Register the Neogma Module in your application using the `forRoot` method, passing the Neogma connection information as an object:
 
 ```ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Neo4jModule } from 'nest-neo4j'
+import { NeogmaModule } from 'nest-neogma'
 
 @Module({
   imports: [
-    Neo4jModule.forRoot({
+    NeogmaModule.forRoot({
       scheme: 'neo4j',
       host: 'localhost',
       port: 7687,
@@ -43,38 +40,36 @@ import { Neo4jModule } from 'nest-neo4j'
 export class AppModule {}
 ```
 
-## Querying Neo4j
+## Querying with Neogma
 
-The `Neo4jService` is `@Injectable`, so can be passed into any constructor:
+The `Neogma` instance is `@Injectable`, so can be passed into any constructor with the `@InjectConnection` decorator:
 
 ```ts
-import { Neo4jService } from 'nest-neo4j'
+import { InjectConnection } from 'nest-neogma'
+import { Neogma } from 'neogma'
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService,
-    private readonly neo4jService: Neo4jService
-    ) {}
+  constructor(
+    @InjectConnection()
+    private neogma: Neogma,
+  ) {}
 
   @Get()
-  async getHello(): Promise<any> {
-    const res = await this.neo4jService.read(`MATCH (n) RETURN count(n) AS count`)
+  async getHello(): Promise<string> {
+    const res =  await this.neogma.queryRunner
+      .run("MATCH (n) RETURN COUNT(n) as count LIMIT 5")
 
     return `There are ${res.records[0].get('count')} nodes in the database`
   }
 }
 ```
 
-## Methods
+## More Information
 
-```ts
-getConfig(): Neo4jConnection;
-getReadSession(database?: string): Session;
-getWriteSession(database?: string): Session;
-read(query: string, params?: object, database?: string): Result;
-write(query: string, params?: object, database?: string): Result;
-```
+For more information about running Neogma in your Node.js or TypeScript project, check out the official [Neogma Documentation](https://themetalfleece.github.io/neogma/).
 
-# More Information
+## TODO
 
-For more information about running Neo4j in your Node.js or TypeScript project, check out [Neo4j GraphAcademy](https://graphacademy.neo4j.com).
+- Add support for models with `NeogmaModule.forFeature`
+  
