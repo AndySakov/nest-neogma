@@ -13,6 +13,11 @@ export type NeogmaConfig = {
    */
   name?: string;
   /**
+   * If `true`, "sequelize.sync()" will be called.
+   * Default: true
+   */
+  synchronize?: boolean;
+  /**
    * Number of times to retry connecting
    * Default: 10
    */

@@ -7,6 +7,7 @@ import {
   Provider,
   Type,
 } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { randomUUID } from "crypto";
 import { Neogma } from "neogma";
@@ -31,6 +32,7 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
   constructor(
     @Inject(NEOGMA_MODULE_OPTIONS)
     private readonly options: NeogmaModuleOptions,
+    private readonly moduleRef: ModuleRef,
   ) {}
 
   static forRoot(options: NeogmaModuleOptions = {}): DynamicModule {
@@ -196,5 +198,10 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
     );
   }
 
-  async onApplicationShutdown() {}
+  async onApplicationShutdown() {
+    const connection = this.moduleRef.get<Neogma>(
+      getConnectionToken(this.options as NeogmaModuleOptions) as Type<Neogma>,
+    );
+    connection && (await connection.driver.close());
+  }
 }
