@@ -6,6 +6,7 @@ import {
   OptionalFactoryDependency,
   Type,
 } from "@nestjs/common";
+import { QueryRunner } from "neogma";
 
 export type NeogmaConfig = {
   /**
@@ -13,7 +14,7 @@ export type NeogmaConfig = {
    */
   name?: string;
   /**
-   * If `true`, "sequelize.sync()" will be called.
+   * If `true`, models will be synchronized with database.
    * Default: true
    */
   synchronize?: boolean;
@@ -31,6 +32,11 @@ export type NeogmaConfig = {
 
 export type NeogmaModuleOptions = NeogmaConfig & Partial<Neo4jConnection>;
 
+interface ConnectOptionsI extends Config {
+  /** whether to log the statements and parameters to the console */
+  logger?: QueryRunner["logger"];
+}
+
 type NeogmaParams = {
   url: string;
   username: string;
@@ -39,7 +45,7 @@ type NeogmaParams = {
 
 export type NeogmaOptions = {
   params: NeogmaParams;
-  options: Config;
+  options: ConnectOptionsI;
 };
 
 export interface NeogmaOptionsFactory {
