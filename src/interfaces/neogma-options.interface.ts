@@ -6,12 +6,18 @@ import {
   OptionalFactoryDependency,
   Type,
 } from "@nestjs/common";
+import { QueryRunner } from "neogma";
 
 export type NeogmaConfig = {
   /**
    * Connection name
    */
   name?: string;
+  /**
+   * If `true`, models will be synchronized with database.
+   * Default: true
+   */
+  synchronize?: boolean;
   /**
    * Number of times to retry connecting
    * Default: 10
@@ -24,17 +30,24 @@ export type NeogmaConfig = {
   retryDelay?: number;
 };
 
-export type NeogmaModuleOptions = NeogmaConfig & Partial<Neo4jConnection>;
+export type NeogmaModuleOptions = Partial<Omit<Neo4jConnection, "config">> &
+  NeogmaConfig & { config?: ConnectOptionsI };
+
+interface ConnectOptionsI extends Config {
+  /** whether to log the statements and parameters to the console */
+  logger?: QueryRunner["logger"];
+}
 
 type NeogmaParams = {
   url: string;
   username: string;
   password: string;
+  database?: string;
 };
 
 export type NeogmaOptions = {
   params: NeogmaParams;
-  options: Config;
+  options: ConnectOptionsI;
 };
 
 export interface NeogmaOptionsFactory {

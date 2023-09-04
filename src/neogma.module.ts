@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Module, DynamicModule } from "@nestjs/common";
 import {
   NeogmaConfig,
@@ -5,6 +6,8 @@ import {
   NeogmaModuleOptions,
 } from "./interfaces/neogma-options.interface";
 import { NeogmaCoreModule } from "./neogma-core.module";
+// import { DEFAULT_CONNECTION_NAME } from "./neogma.constants";
+// import { createNeogmaProviders } from "./neogma.providers";
 
 @Module({})
 export class NeogmaModule {
@@ -17,10 +20,10 @@ export class NeogmaModule {
 
   // static forFeature(
   //   entities: Function[] = [],
-  //   connection: NeogmaOptions | string = DEFAULT_CONNECTION_NAME
+  //   connection: NeogmaModuleOptions | string = DEFAULT_CONNECTION_NAME,
   // ): DynamicModule {
   //   const providers = createNeogmaProviders(entities, connection);
-  //   EntitiesMetadataStorage.addEntitiesByConnection(connection, entities);
+  //   // EntitiesMetadataStorage.addEntitiesByConnection(connection, entities);
   //   return {
   //     module: NeogmaModule,
   //     providers: providers,
