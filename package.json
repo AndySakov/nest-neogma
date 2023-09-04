@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "neo4j-driver": "^5.10.0",
-    "neogma": "^1.12.0",
+    "neogma": "^1.12.1",
     "rxjs": "^7.8.1"
   }
 }

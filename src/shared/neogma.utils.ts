@@ -81,6 +81,7 @@ export function parseModuleOptions(
       url: `${connection.scheme}://${connection.host}:${connection.port}`,
       username: connection.username,
       password: connection.password,
+      database: connection.database,
     },
     options: connection.config,
   };

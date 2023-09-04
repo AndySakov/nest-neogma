@@ -30,7 +30,8 @@ export type NeogmaConfig = {
   retryDelay?: number;
 };
 
-export type NeogmaModuleOptions = NeogmaConfig & Partial<Neo4jConnection>;
+export type NeogmaModuleOptions = Partial<Omit<Neo4jConnection, "config">> &
+  NeogmaConfig & { config?: ConnectOptionsI };
 
 interface ConnectOptionsI extends Config {
   /** whether to log the statements and parameters to the console */
@@ -41,6 +42,7 @@ type NeogmaParams = {
   url: string;
   username: string;
   password: string;
+  database?: string;
 };
 
 export type NeogmaOptions = {
