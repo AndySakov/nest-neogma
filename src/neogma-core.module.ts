@@ -20,11 +20,7 @@ import {
 } from "./interfaces";
 import { NEOGMA_MODULE_ID, NEOGMA_MODULE_OPTIONS } from "./neogma.constants";
 import { coerceNumber, isTruthy } from "./shared";
-import {
-  getConnectionToken,
-  handleRetry,
-  parseModuleOptions,
-} from "./shared/neogma.utils";
+import { getConnectionToken, handleRetry } from "./shared/neogma.utils";
 
 @Global()
 @Module({})
@@ -185,8 +181,15 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
   ): Promise<Neogma> {
     return lastValueFrom(
       defer(async () => {
-        const parsedOptions = parseModuleOptions(options);
-        const neogma = new Neogma(parsedOptions.params, parsedOptions.options);
+        const neogma = new Neogma(
+          {
+            url: `${options.scheme}://${options.host}:${options.port}`,
+            username: options.username,
+            password: options.password,
+            database: options.database,
+          },
+          options.config,
+        );
 
         // const connectionToken = options.name || DEFAULT_CONNECTION_NAME;
         // const models =

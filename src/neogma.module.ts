@@ -38,7 +38,7 @@ export class NeogmaModule {
     };
   }
 
-  static fromEnv(options: NeogmaConfig): DynamicModule {
+  static fromEnv(options?: NeogmaConfig): DynamicModule {
     return {
       module: NeogmaModule,
       imports: [NeogmaCoreModule.fromEnv(options)],

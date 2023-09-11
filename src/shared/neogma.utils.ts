@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Neogma } from "neogma";
-import {
-  NeogmaModuleOptions,
-  NeogmaOptions,
-} from "../interfaces/neogma-options.interface";
+import { NeogmaModuleOptions } from "../interfaces/neogma-options.interface";
 import { DEFAULT_CONNECTION_NAME } from "../neogma.constants";
 import { Logger, Type } from "@nestjs/common";
 import { Observable, delay, retryWhen, scan } from "rxjs";
@@ -20,7 +17,7 @@ const logger = new Logger("NeogmaModule");
 export function getModelToken(
   entity: Function,
   connection: NeogmaModuleOptions | string = DEFAULT_CONNECTION_NAME,
-) {
+): string {
   if (entity === null || entity === undefined) {
     throw new CircularDependencyException("@InjectModel()");
   }
@@ -65,26 +62,6 @@ export function getConnectionPrefix(
     return "";
   }
   return connection.name + "_";
-}
-
-/**
- * This function returns a parsed version of the neogma module options that is compatible with the function params expected by the Neogma constructor.
- * @param {NeogmaModuleOptions} This parameter is
- * an object of type NeogmaModuleOptions.
- * @returns {NeogmaOptions} The parsed NeogmaOptions object.
- */
-export function parseModuleOptions(
-  connection: NeogmaModuleOptions,
-): NeogmaOptions {
-  return {
-    params: {
-      url: `${connection.scheme}://${connection.host}:${connection.port}`,
-      username: connection.username,
-      password: connection.password,
-      database: connection.database,
-    },
-    options: connection.config,
-  };
 }
 
 export function handleRetry(

@@ -1,6 +1,6 @@
 {
   "name": "nest-neogma",
-  "version": "0.3.0",
+  "version": "0.4.2",
   "description": "Neogma integration for Nest",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

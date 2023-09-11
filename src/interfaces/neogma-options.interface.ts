@@ -38,12 +38,12 @@ interface ConnectOptionsI extends Config {
   logger?: QueryRunner["logger"];
 }
 
-type NeogmaParams = {
+export interface NeogmaParams {
   url: string;
   username: string;
   password: string;
   database?: string;
-};
+}
 
 export type NeogmaOptions = {
   params: NeogmaParams;
