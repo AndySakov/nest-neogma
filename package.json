@@ -1,6 +1,6 @@
 {
   "name": "nest-neogma",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Neogma integration for Nest",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "neo4j-driver": "^5.10.0",
-    "neogma": "^1.12.1",
+    "neogma": "^1.12.3",
     "rxjs": "^7.8.1"
   }
 }
