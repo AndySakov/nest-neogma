@@ -181,15 +181,26 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
   ): Promise<Neogma> {
     return lastValueFrom(
       defer(async () => {
-        const neogma = new Neogma(
-          {
-            url: `${options.scheme}://${options.host}:${options.port}`,
-            username: options.username,
-            password: options.password,
-            database: options.database,
-          },
-          options.config,
-        );
+        const neogma =
+          options.useTempDB ?? false
+            ? Neogma.fromTempDatabase(
+                {
+                  url: `${options.scheme}://${options.host}:${options.port}`,
+                  username: options.username,
+                  password: options.password,
+                  database: undefined,
+                },
+                options.config,
+              )
+            : new Neogma(
+                {
+                  url: `${options.scheme}://${options.host}:${options.port}`,
+                  username: options.username,
+                  password: options.password,
+                  database: options.database,
+                },
+                options.config,
+              );
 
         // const connectionToken = options.name || DEFAULT_CONNECTION_NAME;
         // const models =
@@ -205,6 +216,7 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
     const connection = this.moduleRef.get<Neogma>(
       getConnectionToken(this.options as NeogmaModuleOptions) as Type<Neogma>,
     );
+    await connection.clearAllTempDatabases();
     connection && (await connection.driver.close());
   }
 }

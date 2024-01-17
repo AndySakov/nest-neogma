@@ -28,6 +28,12 @@ export type NeogmaConfig = {
    * Default: 3000
    */
   retryDelay?: number;
+  /**
+   * Create a temp db for testing or other purposes
+   * If `true`, it will override the `database` param with a random db name which will be automatically deleted by neogma on application shutdown
+   * Default: false
+   */
+  useTempDB?: boolean;
 };
 
 export type NeogmaModuleOptions = Partial<Omit<Neo4jConnection, "config">> &
