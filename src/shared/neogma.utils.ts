@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Neogma } from "neogma";
 import { NeogmaModuleOptions } from "../interfaces/neogma-options.interface";
-import { DEFAULT_CONNECTION_NAME } from "../neogma.constants";
+import { NEOGMA_DEFAULT_CONNECTION_NAME } from "../neogma.constants";
 import { Logger, Type } from "@nestjs/common";
 import { Observable, delay, retryWhen, scan } from "rxjs";
 import { CircularDependencyException } from "../exceptions/circular-dependency.exception";
@@ -16,7 +16,7 @@ const logger = new Logger("NeogmaModule");
  */
 export function getModelToken(
   entity: Function,
-  connection: NeogmaModuleOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: NeogmaModuleOptions | string = NEOGMA_DEFAULT_CONNECTION_NAME,
 ): string {
   if (entity === null || entity === undefined) {
     throw new CircularDependencyException("@InjectModel()");
@@ -32,13 +32,13 @@ export function getModelToken(
  * @returns {string | Function} The Connection injection token.
  */
 export function getConnectionToken(
-  connection: NeogmaModuleOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: NeogmaModuleOptions | string = NEOGMA_DEFAULT_CONNECTION_NAME,
 ): string | Function | Type<Neogma> {
-  return DEFAULT_CONNECTION_NAME === connection
+  return NEOGMA_DEFAULT_CONNECTION_NAME === connection
     ? Neogma
     : "string" === typeof connection
     ? `${connection}Connection`
-    : DEFAULT_CONNECTION_NAME === connection.name || !connection.name
+    : NEOGMA_DEFAULT_CONNECTION_NAME === connection.name || !connection.name
     ? Neogma
     : `${connection.name}Connection`;
 }
@@ -50,15 +50,15 @@ export function getConnectionToken(
  * @returns {string | Function} The Connection injection token.
  */
 export function getConnectionPrefix(
-  connection: NeogmaModuleOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: NeogmaModuleOptions | string = NEOGMA_DEFAULT_CONNECTION_NAME,
 ): string {
-  if (connection === DEFAULT_CONNECTION_NAME) {
+  if (connection === NEOGMA_DEFAULT_CONNECTION_NAME) {
     return "";
   }
   if (typeof connection === "string") {
     return connection + "_";
   }
-  if (connection.name === DEFAULT_CONNECTION_NAME || !connection.name) {
+  if (connection.name === NEOGMA_DEFAULT_CONNECTION_NAME || !connection.name) {
     return "";
   }
   return connection.name + "_";
