@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { Module, DynamicModule } from "@nestjs/common";
 import {
   NeogmaConfig,

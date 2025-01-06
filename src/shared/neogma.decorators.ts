@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { Inject } from "@nestjs/common";
 import { NeogmaModuleOptions } from "../interfaces";
 import { getConnectionToken, getModelToken } from "./neogma.utils";

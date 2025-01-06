@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { Neogma } from "neogma";
 import { NeogmaModuleOptions } from "../interfaces/neogma-options.interface";
 import { NEOGMA_DEFAULT_CONNECTION_NAME } from "../neogma.constants";
@@ -33,14 +33,14 @@ export function getModelToken(
  */
 export function getConnectionToken(
   connection: NeogmaModuleOptions | string = NEOGMA_DEFAULT_CONNECTION_NAME,
-): string | Function | Type<Neogma> {
+): string | Function | Type {
   return NEOGMA_DEFAULT_CONNECTION_NAME === connection
     ? Neogma
     : "string" === typeof connection
-    ? `${connection}Connection`
-    : NEOGMA_DEFAULT_CONNECTION_NAME === connection.name || !connection.name
-    ? Neogma
-    : `${connection.name}Connection`;
+      ? `${connection}Connection`
+      : NEOGMA_DEFAULT_CONNECTION_NAME === connection.name || !connection.name
+        ? Neogma
+        : `${connection.name}Connection`;
 }
 
 /**
@@ -65,7 +65,7 @@ export function getConnectionPrefix(
 }
 
 export function handleRetry(
-  retryAttempts = 9,
+  retryAttempts = 10,
   retryDelay = 3000,
 ): <T>(source: Observable<T>) => Observable<T> {
   return <T>(source: Observable<T>) =>

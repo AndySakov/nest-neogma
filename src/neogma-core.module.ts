@@ -182,7 +182,7 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
     return lastValueFrom(
       defer(async () => {
         const neogma =
-          options.useTempDB ?? false
+          (options.useTempDB ?? false)
             ? Neogma.fromTempDatabase(
                 {
                   url: `${options.scheme}://${options.host}:${options.port}`,
@@ -190,7 +190,13 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
                   password: options.password,
                   database: undefined,
                 },
-                options.config,
+                {
+                  ...options.config,
+                  notificationFilter: {
+                    ...options.config?.notificationFilter,
+                    disabledCategories: [],
+                  },
+                },
               )
             : new Neogma(
                 {
@@ -199,7 +205,13 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
                   password: options.password,
                   database: options.database,
                 },
-                options.config,
+                {
+                  ...options.config,
+                  notificationFilter: {
+                    ...options.config?.notificationFilter,
+                    disabledCategories: [],
+                  },
+                },
               );
 
         // const connectionToken = options.name || DEFAULT_CONNECTION_NAME;
@@ -217,6 +229,7 @@ export class NeogmaCoreModule implements OnApplicationShutdown {
       getConnectionToken(this.options as NeogmaModuleOptions) as Type<Neogma>,
     );
     await connection.clearAllTempDatabases();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     connection && (await connection.driver.close());
   }
 }
